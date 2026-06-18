@@ -1,0 +1,103 @@
+name: Release and Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+# Дозволи, необхідні для створення релізу, запису в репозиторій та деплою на Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  release:
+    name: Create Release & Update README
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.set_version.outputs.VERSION }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Необхідно для коректної роботи з історією гілок
+
+      - name: Set Version Number
+        id: set_version
+        run: echo "VERSION=v1.0.${{ github.run_number }}" >> $GITHUB_ENV
+
+      - name: Fetch Chuck Norris Joke
+        id: joke
+        run: |
+          JOKE=$(curl -s https://api.chucknorris.io/jokes/random | jq -r '.value')
+          echo "JOKE=$JOKE" >> $GITHUB_ENV
+
+      - name: Get Latest PR Title
+        id: pr_title
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_TITLE=$(gh pr list --search "is:merged base:main" --limit 1 --json title --jq '.[0].title' || echo "Manual merge")
+          echo "PR_TITLE=$PR_TITLE" >> $GITHUB_ENV
+
+      - name: Update README.md
+        run: |
+          # Формуємо новий блок тексту
+          NEW_TEXT="\n## Latest Release Info 🚀\n- **Version:** ${{ env.VERSION }}\n- **PR Title:** ${{ env.PR_TITLE }}\n- **Chuck Norris Joke:** ${{ env.JOKE }}\n"
+          
+          # Замінюємо текст між маркерами за допомогою Perl
+          perl -0777 -pi -e "s/.*/$NEW_TEXT/s" README.md
+
+      - name: Commit and Push README
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          # [skip ci] дуже важливий тег, щоб уникнути нескінченного циклу запусків workflow
+          git commit -m "docs: update release info in README [skip ci]" || echo "No changes to commit"
+          git push
+
+      - name: Create Git Tag & GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git tag ${{ env.VERSION }}
+          git push origin ${{ env.VERSION }}
+          gh release create ${{ env.VERSION }} --title "Release ${{ env.VERSION }}" --notes "### PR: ${{ env.PR_TITLE }}  
+          **Joke of the release:** ${{ env.JOKE }}"
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: release # Чекаємо завершення релізу
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project for GitHub Pages
+        # Вказуємо базовий шлях для Vite, інакше шляхи до JS/CSS файлів будуть битими
+        run: npm run build -- --base=/${{ github.event.repository.name }}/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist' # Vite за замовчуванням збирає проєкт у папку dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

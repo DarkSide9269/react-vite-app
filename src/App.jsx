@@ -7,6 +7,6 @@ function App() {
       <p>Це мінімальний проєкт для лабораторної роботи.</p>
     </div>
   )
-}
+} //Cloude code
 
 export default App

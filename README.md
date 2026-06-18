@@ -1,5 +1,5 @@
 
 ## Latest Release Info 🚀
-- **Version:** v1.0.3
+- **Version:** v1.0.4
 - **PR Title:** 
-- **Chuck Norris Joke:** In back to the future 4 Chuck Norris roundhouse kicked the Delorean back. This also gave Micheal J Fox Parkinson's.
+- **Chuck Norris Joke:** Before Chuck Norris came along, pitbulls were lap dogs.

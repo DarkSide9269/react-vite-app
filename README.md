@@ -14,7 +14,8 @@
 
 
 
+
 ## Latest Release Info
-- **Version:** v1.0.19
-- **Commit/PR:** Delete src/main/java directory
-- **Chuck Norris Joke:** Chuck Norris once beat up Godzilla for lunch money
+- **Version:** v1.0.20
+- **Commit/PR:** Update index.html
+- **Chuck Norris Joke:** Every once in awhile Chuck Norris goes on vacation to asia or the Middle-East. While there he usually gets into a bar-fight. Afterwards, this is remembered as a war

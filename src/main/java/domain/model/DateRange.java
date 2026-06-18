@@ -15,4 +15,4 @@ public record DateRange(LocalDate startDate, LocalDate endDate) {
     public boolean overlaps(DateRange other) {
         return this.startDate.isBefore(other.endDate) && this.endDate.isAfter(other.startDate);
     }
-}
+} // перевіряю роботу Actions

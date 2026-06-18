@@ -1,6 +1,5 @@
-# Лабораторна: CI/CD GitHub Actions
 
-Цей репозиторій містить мінімальний React-застосунок для демонстрації автоматизації.
-
-## Latest Release Info
-Тут бот автоматично напише інформацію після злиття в main.
+## Latest Release Info 🚀
+- **Version:** v1.0.2
+- **PR Title:** 
+- **Chuck Norris Joke:** Chuck Norris wil see you.... NOW!

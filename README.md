@@ -15,7 +15,8 @@
 
 
 
+
 ## Latest Release Info
-- **Version:** v1.0.20
-- **Commit/PR:** Update index.html
-- **Chuck Norris Joke:** Every once in awhile Chuck Norris goes on vacation to asia or the Middle-East. While there he usually gets into a bar-fight. Afterwards, this is remembered as a war
+- **Version:** v1.0.22
+- **Commit/PR:** Create App.jsx
+- **Chuck Norris Joke:** The Japanese surrendered in 1945 not because of the atomic bomb, but because they heard Chuck Norris was about to be unleashed upon them.

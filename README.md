@@ -3,7 +3,8 @@
 
 
 
+
 ## Latest Release Info
-- **Version:** v1.0.8
-- **Commit/PR:** Create index.html
-- **Chuck Norris Joke:** Chuck Norris is the only person on Earth who can literally be beside himself. You don't want to be around when they do that.
+- **Version:** v1.0.9
+- **Commit/PR:** Initialize main.jsx with React and App component
+- **Chuck Norris Joke:** Chuck Norris owns a piggy bank made from a real pig.
